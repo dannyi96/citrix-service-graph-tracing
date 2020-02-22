@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sales-portal
-  namespace: default
   labels:
     app: sales-portal
 spec:
@@ -18,14 +17,12 @@ spec:
       containers:
       - name: sales-portal
         image: docker.io/danny3112/sales-portal
-
-
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
   name: sales-portal
-  namespace: default
   labels:
     app: sales-portal
 spec:
@@ -36,14 +33,13 @@ spec:
   selector:
     app: sales-portal
   type: LoadBalancer
-  loadBalancerIP: ""
 
 ---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: leads
-  namespace: default
   labels:
     app: leads
 spec:
@@ -61,11 +57,11 @@ spec:
         image: docker.io/danny3112/sales-portal
 
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
   name: leads
-  namespace: default
   labels:
     app: leads
 spec:
@@ -76,5 +72,239 @@ spec:
   selector:
     app: leads
   type: LoadBalancer
-  loadBalancerIP: ""
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opportunities
+  labels:
+    app: opportunities
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: opportunities
+  template:
+    metadata:
+      labels:
+        app: opportunities
+    spec:
+      containers:
+      - name: opportunities
+        image: docker.io/danny3112/sales-portal
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: opportunities
+  labels:
+    app: opportunities
+spec:
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
+  selector:
+    app: opportunities
+  type: LoadBalancer
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-catalogue
+  labels:
+    app: product-catalogue
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product-catalogue
+  template:
+    metadata:
+      labels:
+        app: product-catalogue
+    spec:
+      containers:
+      - name: product-catalogue
+        image: docker.io/danny3112/sales-portal
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-catalogue
+  labels:
+    app: product-catalogue
+spec:
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
+  selector:
+    app: product-catalogue
+  type: LoadBalancer
+  
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalogue-store
+  labels:
+    app: catalogue-store
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: catalogue-store
+  template:
+    metadata:
+      labels:
+        app: catalogue-store
+    spec:
+      containers:
+      - name: catalogue-store
+        image: docker.io/danny3112/sales-portal
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalogue-store
+  labels:
+    app: catalogue-store
+spec:
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
+  selector:
+    app: catalogue-store
+  type: LoadBalancer
+  
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: accounts
+  labels:
+    app: accounts
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: accounts
+  template:
+    metadata:
+      labels:
+        app: accounts
+    spec:
+      containers:
+      - name: accounts
+        image: docker.io/danny3112/sales-portal
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: accounts
+  labels:
+    app: accounts
+spec:
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
+  selector:
+    app: accounts
+  type: LoadBalancer
+  
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payables
+  labels:
+    app: payables
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payables
+  template:
+    metadata:
+      labels:
+        app: payables
+    spec:
+      containers:
+      - name: payables
+        image: docker.io/danny3112/sales-portal
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: payables
+  labels:
+    app: payables
+spec:
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
+  selector:
+    app: payables
+  type: LoadBalancer
+  
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: receivables
+  labels:
+    app: receivables
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: receivables
+  template:
+    metadata:
+      labels:
+        app: receivables
+    spec:
+      containers:
+      - name: receivables
+        image: docker.io/danny3112/sales-portal
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: receivables
+  labels:
+    app: receivables
+spec:
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
+  selector:
+    app: receivables
+  type: LoadBalancer
+  
 ---
