@@ -1,0 +1,9 @@
+FROM in-docker-reg.eng.citrite.net/cpx-dev/blog/base:v0.1
+
+COPY requirements.txt /app/requirements.txt
+
+ADD accounts /app
+
+ENTRYPOINT [ "bash" ]
+
+CMD [ "run.sh" ]
