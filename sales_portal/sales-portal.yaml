@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sales-portal
+  namespace: default
+  labels:
+    app: sales-portal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sales-portal
+  template:
+    metadata:
+      labels:
+        app: sales-portal
+    spec:
+      containers:
+      - name: sales-portal
+        image: docker.io/danny3112/sales-portal
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sales-portal
+  namespace: default
+  labels:
+    app: sales-portal
+spec:
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
+  selector:
+    app: sales-portal
+  type: LoadBalancer
+  loadBalancerIP: ""
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: leads
+  namespace: default
+  labels:
+    app: leads
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: leads
+  template:
+    metadata:
+      labels:
+        app: leads
+    spec:
+      containers:
+      - name: leads
+        image: docker.io/danny3112/sales-portal
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: leads
+  namespace: default
+  labels:
+    app: leads
+spec:
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
+  selector:
+    app: leads
+  type: LoadBalancer
+  loadBalancerIP: ""
+---
