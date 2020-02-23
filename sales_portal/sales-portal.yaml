@@ -22,17 +22,16 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: sales-portal
+  name: sales-portal-service
   labels:
-    app: sales-portal
+    app: sales-portal-service
 spec:
+  clusterIP: None
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 5000
+  - name: sales-portal
+    port: 5000
   selector:
     app: sales-portal
-  type: LoadBalancer
 
 ---
 
@@ -61,17 +60,16 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: leads
+  name: leads-service
   labels:
-    app: leads
+    app: leads-service
 spec:
+  clusterIP: None
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 5000
+  - name: leads-service
+    port: 5000
   selector:
     app: leads
-  type: LoadBalancer
 
 ---
 
@@ -100,17 +98,16 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: opportunities
+  name: opportunities-service
   labels:
-    app: opportunities
+    app: opportunities-service
 spec:
+  clusterIP: None
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 5000
+  - name: opportunities-service
+    port: 5000
   selector:
     app: opportunities
-  type: LoadBalancer
 
 ---
 
@@ -139,17 +136,16 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: product-catalogue
+  name: product-catalogue-service
   labels:
-    app: product-catalogue
+    app: product-catalogue-service
 spec:
+  clusterIP: None
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 5000
+  - name: product-catalogue-service
+    port: 5000
   selector:
     app: product-catalogue
-  type: LoadBalancer
   
 ---
 
@@ -178,17 +174,16 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: catalogue-store
+  name: catalogue-store-service
   labels:
-    app: catalogue-store
+    app: catalogue-store-service
 spec:
+  clusterIP: None
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 5000
+  - name: catalogue-store-service
+    port: 5000
   selector:
     app: catalogue-store
-  type: LoadBalancer
   
 ---
 
@@ -217,17 +212,16 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: accounts
+  name: accounts-service
   labels:
-    app: accounts
+    app: accounts-service
 spec:
+  clusterIP: None
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 5000
+  - name: accounts-service
+    port: 5000
   selector:
     app: accounts
-  type: LoadBalancer
   
 ---
 
@@ -256,17 +250,16 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: payables
+  name: payables-service
   labels:
-    app: payables
+    app: payables-service
 spec:
+  clusterIP: None
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 5000
+  - name: payables-service
+    port: 5000
   selector:
     app: payables
-  type: LoadBalancer
   
 ---
 
@@ -295,16 +288,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: receivables
+  name: receivables-service
   labels:
-    app: receivables
+    app: receivables-service
 spec:
+  clusterIP: None
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 5000
+  - name: receivables-service
+    port: 5000
   selector:
     app: receivables
-  type: LoadBalancer
   
 ---
