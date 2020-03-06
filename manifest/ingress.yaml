@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: sales-portal
+  name: netflix
   annotations:
    ingress.citrix.com/insecure-termination: "allow"
    kubernetes.io/ingress.class: "netflix-cpx"
@@ -58,4 +58,11 @@ spec:
           - path: 
             backend:
               serviceName: mutual-friends-interests-service
+              servicePort: 5000
+       - host: trending
+         http:
+          paths:
+          - path: 
+            backend:
+              serviceName: trending-service
               servicePort: 5000

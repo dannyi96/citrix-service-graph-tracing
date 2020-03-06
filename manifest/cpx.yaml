@@ -270,3 +270,20 @@ spec:
     app: cpx-ingress
     
 ---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: trending
+spec:
+  ports:
+  - name: trending-80
+    port: 80
+    targetPort: 80
+  - name: trending-443
+    port: 443
+    targetPort: 443
+  selector:
+    app: cpx-ingress
+    
+---
