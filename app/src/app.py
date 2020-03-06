@@ -61,44 +61,23 @@ def movies():
 def recommendation_engine():
 	HEADERS = set_trace_headers(request)
 	response = requests.get("http://recommendation-engine/netflix-recommendation-engine",headers=HEADERS)
-	return 'Welcome to our Netflix Clone Website!! <br/> We have a lot of features!!!  <br/> &nbsp;&nbsp; List of shows  <br/> &nbsp;&nbsp; Recommendations  <br/> &nbsp;&nbsp; Friends'
-
+	return response.content
 
 @app.route('/netflix-recommendation-engine')
 def netflix_recommendation_engine():
 	HEADERS = set_trace_headers(request)
-	response_1 = requests.get("http://trending/trending",headers=HEADERS)
-	response_2 = requests.get("http://similarity-calculator/similarity-calculator",headers=HEADERS)
-	response_3 = requests.get("http://mutual-friends-interests/mutual-friends-interestsr",headers=HEADERS)
+	response_1 = str(requests.get("http://trending/netflix-trending",headers=HEADERS).content)
+	response_2 = str(requests.get("http://similarity-calculator/netflix-similarity-calculator",headers=HEADERS).content)
+	response_3 = str(requests.get("http://mutual-friends-interests/netflix-mutual-friends-interests",headers=HEADERS).content)
 	return '\n'.join([response_1,response_2,response_3])
-
-@app.route('/trending')
-def trending():
-	HEADERS = set_trace_headers(request)
-	response = requests.get("http://trending/netflix-trending",headers=HEADERS)
-	return response.content
 
 @app.route('/netflix-trending')
 def netflix_trending():
 	return 'Trending: Mr Robot \n Friends \n'
 
-@app.route('/similarity-calculator')
-def similarity_calculator():
-	HEADERS = set_trace_headers(request)
-	response = requests.get("http://similarity-calculator/netflix-similarity-calculator",headers=HEADERS)
-	return response.content
-
-
 @app.route('/netflix-similarity-calculator')
 def netflix_similarity_calculator():
 	return 'Similar shows: Dexter \n Big Bang Theory \n'
-
-
-@app.route('/mutual-friends-interests')
-def mutual_friends_interests():
-	HEADERS = set_trace_headers(request)
-	response = requests.get("http://mutual-friends-interests/netflix-mutual-friends-interests",headers=HEADERS)
-	return response.content
 
 @app.route('/netflix-mutual-friends-interests')
 def netflix_mutual_friends_interests():

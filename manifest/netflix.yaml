@@ -125,7 +125,7 @@ spec:
   template:
     metadata:
       labels:
-        app: pmetadata-store
+        app: metadata-store
     spec:
       containers:
       - name: metadata-store
