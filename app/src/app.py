@@ -23,95 +23,84 @@ def set_trace_headers(req):
 
 @app.route('/')
 def main_page():
-	return 'Welcome to our Sales Portal Main Page'
+	return 'Welcome to our Netflix Clone Website!! Get readt to Netflix & chill'
 
-@app.route('/sales_portal')
-def sales_portal():
-	return 'Welcome to our Sales Portal Main Page <br/> We have a lot of features!!!  <br/> &nbsp;&nbsp; Leads  <br/> &nbsp;&nbsp; Accounts  <br/> &nbsp;&nbsp; Product Catalogue'
+@app.route('/netflix-frontend')
+def netflix_frontend():
+	return 'Welcome to our Netflix Clone Website!! <br/> We have a lot of features!!!  <br/> &nbsp;&nbsp; List of shows  <br/> &nbsp;&nbsp; Recommendations  <br/> &nbsp;&nbsp; Friends'
 
-@app.route('/leads_page')
-def leads_page():
-	return 'Welcome to our Sales Portal Main Page <br/> These are all our leads  <br/> &nbsp;&nbsp; Leads  <br/> &nbsp;&nbsp; Mr. X  <br/> &nbsp;&nbsp; Mr. Y'
-
-@app.route('/opportunities_page')
-def opportunities_page():
-	return 'Welcome to our Sales Portal Main Page <br/> These are all our opportunities  <br/> &nbsp;&nbsp; Software Engineer 2  <br/> &nbsp;&nbsp; Principal SW Engineer <br/> &nbsp;&nbsp; PM Engineer'
-
-@app.route('/product_catalogue_page')
-def product_catalogue_page():
+@app.route('/netflix-tv-shows')
+def netflix_tv_shows():
 	HEADERS = set_trace_headers(request)
-	response = 'Welcome to the Main Product Catalogue Page. These are a list of all our items'
-	query_string = ''
-	min_range = request.args.get('min_range')
-	max_range = request.args.get('max_range')
-	query_string += 'min_range=%s'%(min_range) if min_range else ''
-	query_string += 'max_range=%s'%(max_range) if max_range else ''
-	response += str(requests.get("http://catalogue-store/catalogue_store_page?%s"%(query_string),headers=HEADERS).content)
-	return response
+	response = requests.get("http://metadata-store/netflix-metadata-store",headers=HEADERS)
+	return 'Tv Shows List: %s'%(response.content)
 
-@app.route('/catalogue_store_page')
-def catalogue_store_page():
-	min_range = request.args.get('min_range')
-	max_range = request.args.get('max_range')
-	response = 'min_range: %s \n max_range:%s'%(min_range,max_range)
-	try:
-		if min_range and int(min_range) < 0:
-			raise
-		if max_range and int(max_range) < 0:
-			raise
-	except:
-		return '%s Server Error encountered !!'%(response), 500
-	if min_range:
-		response += '<br/> Filters Price Above %f'%(float(min_range))
-	if max_range:
-		response += '<br/> Filters Price Below %f'%(float(max_range))
-	response += '<br/> Items <br/> Item 1 <br/> Item 2 <br/>'
-	return response
-
-@app.route('/payables_page')
-def payables_page():
-	return 'Total Payables: $1023'
-
-@app.route('/receivables_page')
-def receivables_page():
-	return 'Total Receivables: $230'
-
-@app.route('/accounts_page')
-def accounts_page():
+@app.route('/netflix-movies')
+def netflix_movies():
 	HEADERS = set_trace_headers(request)
-	response = 'Welcome to the Main Accounts Page. These are a list of all your Receivables & Payables'
-	response += str(requests.get("http://payables/payables_page",headers=HEADERS).content)
-	response += str(requests.get("http://receivables/receivables_page",headers=HEADERS).content)
-	return response
+	response = requests.get("http://metadata-store/netflix-metadata-store",headers=HEADERS)
+	return 'Movies List: %s'%(response.content)
 
-@app.route('/leads')
-def leads():
+@app.route('/netflix-metadata-store')
+def netflix_metdata_store():
+	return 'Mr Robot \n Dexter \n Hannibal \n Silicon Valley ....'
+
+@app.route('/tv-shows')
+def tv_shows():
 	HEADERS = set_trace_headers(request)
-	multimedia = request.args.get('multimedia')
-	if multimedia == "yes":
-		time.sleep(2)
-	response = requests.get("http://leads/leads_page",headers=HEADERS)
+	response = requests.get("http://tv-shows/netflix-tv-shows",headers=HEADERS)
 	return response.content
 
-@app.route('/opportunities')
-def opportunities():
+@app.route('/movies')
+def movies():
 	HEADERS = set_trace_headers(request)
-	response = requests.get("http://opportunities/opportunities_page",headers=HEADERS)
+	response = requests.get("http://movies/netflix-movies",headers=HEADERS)
 	return response.content
 
-@app.route('/product_catalogue')
-def product_catalogue():
+@app.route('/recommendation-engine')
+def recommendation_engine():
 	HEADERS = set_trace_headers(request)
-	query_string = ''
-	min_range = request.args.get('min_range')
-	max_range = request.args.get('max_range')
-	query_string += 'min_range=%s'%(min_range) if min_range else ''
-	query_string += 'max_range=%s'%(max_range) if max_range else ''
-	response = requests.get("http://product-catalogue/product_catalogue_page?%s"%(query_string),headers=HEADERS)
+	response = requests.get("http://recommendation-engine/netflix-recommendation-engine",headers=HEADERS)
+	return 'Welcome to our Netflix Clone Website!! <br/> We have a lot of features!!!  <br/> &nbsp;&nbsp; List of shows  <br/> &nbsp;&nbsp; Recommendations  <br/> &nbsp;&nbsp; Friends'
+
+
+@app.route('/netflix-recommendation-engine')
+def netflix_recommendation_engine():
+	HEADERS = set_trace_headers(request)
+	response_1 = requests.get("http://trending/trending",headers=HEADERS)
+	response_2 = requests.get("http://similarity-calculator/similarity-calculator",headers=HEADERS)
+	response_3 = requests.get("http://mutual-friends-interests/mutual-friends-interestsr",headers=HEADERS)
+	return '\n'.join([response_1,response_2,response_3])
+
+@app.route('/trending')
+def trending():
+	HEADERS = set_trace_headers(request)
+	response = requests.get("http://trending/netflix-trending",headers=HEADERS)
 	return response.content
 
-@app.route('/accounts')
-def accounts():
+@app.route('/netflix-trending')
+def netflix_trending():
+	return 'Trending: Mr Robot \n Friends \n'
+
+@app.route('/similarity-calculator')
+def similarity_calculator():
 	HEADERS = set_trace_headers(request)
-	response = requests.get("http://accounts/accounts_page",headers=HEADERS)
+	response = requests.get("http://similarity-calculator/netflix-similarity-calculator",headers=HEADERS)
 	return response.content
+
+
+@app.route('/netflix-similarity-calculator')
+def netflix_similarity_calculator():
+	return 'Similar shows: Dexter \n Big Bang Theory \n'
+
+
+@app.route('/mutual-friends-interests')
+def mutual_friends_interests():
+	HEADERS = set_trace_headers(request)
+	response = requests.get("http://mutual-friends-interests/netflix-mutual-friends-interests",headers=HEADERS)
+	return response.content
+
+@app.route('/netflix-mutual-friends-interests')
+def netflix_mutual_friends_interests():
+	return 'Friends Interests: Silicon Valley \n HTGAWM \n'
+
