@@ -155,13 +155,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: sales-portal
+  name: netflix-frontend
 spec:
   ports:
-  - name: sales-portal-80
+  - name: netflix-frontend-80
     port: 80
     targetPort: 80
-  - name: sales-portal-443
+  - name: netflix-frontend-443
     port: 443
     targetPort: 443
   selector:
@@ -172,13 +172,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: leads
+  name: tv-shows
 spec:
   ports:
-  - name: leads-80
+  - name: tv-shows-80
     port: 80
     targetPort: 80
-  - name: leads-443
+  - name: tv-shows-443
     port: 443
     targetPort: 443
   selector:
@@ -189,30 +189,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: opportunities
+  name: movies
 spec:
   ports:
-  - name: opportunities-80
+  - name: movies-80
     port: 80
     targetPort: 80
-  - name: opportunities-443
-    port: 443
-    targetPort: 443
-  selector:
-    app: cpx-ingress
-    
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: product-catalogue
-spec:
-  ports:
-  - name: product-catalogue-80
-    port: 80
-    targetPort: 80
-  - name: product-catalogue-443
+  - name: movies-443
     port: 443
     targetPort: 443
   selector:
@@ -223,13 +206,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: catalogue-store
+  name: metadata-store
 spec:
   ports:
-  - name: catalogue-store-80
+  - name: metadata-store-80
     port: 80
     targetPort: 80
-  - name: catalogue-store-443
+  - name: metadata-store-443
     port: 443
     targetPort: 443
   selector:
@@ -240,13 +223,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: accounts
+  name: recommendation-engine
 spec:
   ports:
-  - name: accounts-80
+  - name: recommendation-engine-80
     port: 80
     targetPort: 80
-  - name: accounts-443
+  - name: recommendation-engine-443
     port: 443
     targetPort: 443
   selector:
@@ -257,13 +240,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: payables
+  name: similarity-calculator
 spec:
   ports:
-  - name: payables-80
+  - name: similarity-calculator-80
     port: 80
     targetPort: 80
-  - name: payables-443
+  - name: similarity-calculator-443
     port: 443
     targetPort: 443
   selector:
@@ -274,13 +257,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: receivables
+  name: mutual-friends-interests
 spec:
   ports:
-  - name: receivables-80
+  - name: mutual-friends-interests-80
     port: 80
     targetPort: 80
-  - name: receivables-443
+  - name: mutual-friends-interests-443
     port: 443
     targetPort: 443
   selector:
