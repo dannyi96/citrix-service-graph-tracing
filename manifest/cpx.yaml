@@ -126,7 +126,7 @@ spec:
                 fieldPath: metadata.namespace
           args:
             - --ingress-classes
-              sales-portal
+              netflix-cpx
           imagePullPolicy: Always
 
 ---
