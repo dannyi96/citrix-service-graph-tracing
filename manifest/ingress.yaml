@@ -1,68 +1,68 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: sales-portal
+  name: netflix
   annotations:
    ingress.citrix.com/insecure-termination: "allow"
-   kubernetes.io/ingress.class: "sales-portal"
+   kubernetes.io/ingress.class: "netflix-cpx"
    ingress.citrix.com/analyticsprofile: '{"webinsight": {"httpurl":"ENABLED", "httpuseragent":"ENABLED", "httphost":"ENABLED", "httpmethod":"ENABLED", "httpcontenttype":"ENABLED"}, "tcpinsight": {"tcpBurstReporting":"DISABLED"}}'
 spec:
       tls:
       - hosts:
       rules:
-       - host: sales-portal
+       - host: netflix-frontend
          http:
           paths:
           - path:
             backend:
-              serviceName: sales-portal-service 
+              serviceName: netflix-frontend-service
               servicePort: 5000
-       - host: leads
+       - host: tv-shows
          http:
           paths:
           - path:
             backend:
-              serviceName: leads-service
+              serviceName: tv-shows-service
               servicePort: 5000
-       - host: opportunities
+       - host: movies
          http:
           paths:
           - path:
             backend:
-              serviceName: opportunities-service
+              serviceName: movies-service
               servicePort: 5000
-       - host: product-catalogue
+       - host: metadata-store
          http:
           paths:
           - path:
             backend:
-              serviceName: product-catalogue-service
+              serviceName: metadata-store-service
               servicePort: 5000
-       - host: catalogue-store
+       - host: recommendation-engine
          http:
           paths:
           - path: 
             backend:
-              serviceName: catalogue-store-service
+              serviceName: recommendation-engine-service
               servicePort: 5000
-       - host: accounts
+       - host: similarity-calculator
          http:
           paths:
           - path: 
             backend:
-              serviceName: accounts-service
+              serviceName: similarity-calculator-service
               servicePort: 5000
-       - host: payables
+       - host: mutual-friends-interests
          http:
           paths:
           - path: 
             backend:
-              serviceName: payables-service
+              serviceName: mutual-friends-interests-service
               servicePort: 5000
-       - host: receivables
+       - host: trending
          http:
-          paths: 
-          - path:
+          paths:
+          - path: 
             backend:
-              serviceName: receivables-service
+              serviceName: trending-service
               servicePort: 5000
