@@ -300,3 +300,41 @@ spec:
     app: mutual-friends-interests
   
 ---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: telemetry-store
+  labels:
+    app: telemetry-store
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: telemetry-store
+  template:
+    metadata:
+      labels:
+        app: telemetry-store
+    spec:
+      containers:
+      - name: telemetry-store
+        image: docker.io/danny3112/netflix
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: telemetry-store-service
+  labels:
+    app: telemetry-store-service
+spec:
+  clusterIP: None
+  ports:
+  - name: telemetry-store-service
+    port: 5000
+  selector:
+    app: telemetry-store
+  
+---
