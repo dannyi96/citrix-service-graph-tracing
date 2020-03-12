@@ -10,59 +10,66 @@ spec:
       tls:
       - hosts:
       rules:
-       - host: netflix-frontend
+       - host: netflix-frontend-service
          http:
           paths:
           - path:
             backend:
-              serviceName: netflix-frontend-service
+              serviceName: netflix-frontend
               servicePort: 5000
-       - host: tv-shows
+       - host: tv-shows-service
          http:
           paths:
           - path:
             backend:
-              serviceName: tv-shows-service
+              serviceName: tv-shows
               servicePort: 5000
-       - host: movies
+       - host: movies-service
          http:
           paths:
           - path:
             backend:
-              serviceName: movies-service
+              serviceName: movies
               servicePort: 5000
-       - host: metadata-store
+       - host: metadata-store-service
          http:
           paths:
           - path:
             backend:
-              serviceName: metadata-store-service
+              serviceName: metadata-store
               servicePort: 5000
-       - host: recommendation-engine
+       - host: recommendation-engine-service
          http:
           paths:
           - path: 
             backend:
-              serviceName: recommendation-engine-service
+              serviceName: recommendation-engine
               servicePort: 5000
-       - host: similarity-calculator
+       - host: similarity-calculator-service
          http:
           paths:
           - path: 
             backend:
-              serviceName: similarity-calculator-service
+              serviceName: similarity-calculator
               servicePort: 5000
-       - host: mutual-friends-interests
+       - host: mutual-friends-interests-service
          http:
           paths:
           - path: 
             backend:
-              serviceName: mutual-friends-interests-service
+              serviceName: mutual-friends-interests
               servicePort: 5000
-       - host: trending
+       - host: trending-service
          http:
           paths:
           - path: 
             backend:
-              serviceName: trending-service
+              serviceName: trending
+              servicePort: 5000
+       - host: telemetry-store-service
+         http:
+          paths:
+          - path: 
+            backend:
+              serviceName: telemetry-store
               servicePort: 5000

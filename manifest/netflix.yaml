@@ -22,9 +22,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: netflix-frontend-service
+  name: netflix-frontend
   labels:
-    app: netflix-frontend-service
+    app: netflix-frontend
 spec:
   clusterIP: None
   ports:
@@ -60,13 +60,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: tv-shows-service
+  name: tv-shows
   labels:
-    app: tv-shows-service
+    app: tv-shows
 spec:
   clusterIP: None
   ports:
-  - name: tv-shows-service
+  - name: tv-shows
     port: 5000
   selector:
     app: tv-shows
@@ -98,13 +98,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: movies-service
+  name: movies
   labels:
-    app: movies-service
+    app: movies
 spec:
   clusterIP: None
   ports:
-  - name: movies-service
+  - name: movies
     port: 5000
   selector:
     app: movies
@@ -136,9 +136,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: metadata-store-service
+  name: metadata-store
   labels:
-    app: metadata-store-service
+    app: metadata-store
 spec:
   clusterIP: None
   ports:
@@ -174,13 +174,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: recommendation-engine-service
+  name: recommendation-engine
   labels:
-    app: recommendation-engine-service
+    app: recommendation-engine
 spec:
   clusterIP: None
   ports:
-  - name: recommendation-engine-service
+  - name: recommendation-engine
     port: 5000
   selector:
     app: recommendation-engine
@@ -212,13 +212,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: trending-service
+  name: trending
   labels:
-    app: trending-service
+    app: trending
 spec:
   clusterIP: None
   ports:
-  - name: trending-service
+  - name: trending
     port: 5000
   selector:
     app: trending
@@ -250,13 +250,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: similarity-calculator-service
+  name: similarity-calculator
   labels:
-    app: similarity-calculator-service
+    app: similarity-calculator
 spec:
   clusterIP: None
   ports:
-  - name: similarity-calculator-service
+  - name: similarity-calculator
     port: 5000
   selector:
     app: similarity-calculator
@@ -288,15 +288,53 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mutual-friends-interests-service
+  name: mutual-friends-interests
   labels:
-    app: mutual-friends-interests-service
+    app: mutual-friends-interests
 spec:
   clusterIP: None
   ports:
-  - name: mutual-friends-interests-service
+  - name: mutual-friends-interests
     port: 5000
   selector:
     app: mutual-friends-interests
+  
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: telemetry-store
+  labels:
+    app: telemetry-store
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: telemetry-store
+  template:
+    metadata:
+      labels:
+        app: telemetry-store
+    spec:
+      containers:
+      - name: telemetry-store
+        image: docker.io/danny3112/netflix
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: telemetry-store
+  labels:
+    app: telemetry-store
+spec:
+  clusterIP: None
+  ports:
+  - name: telemetry-store
+    port: 5000
+  selector:
+    app: telemetry-store
   
 ---
