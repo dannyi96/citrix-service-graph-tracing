@@ -26,9 +26,9 @@ data = open('netflix_titles.csv','r')
 @app.route('/')
 def main_page():
 	HEADERS = set_trace_headers(request)
-	response_1 = str(requests.get("http://tv-shows/netflix-tv-shows",headers=HEADERS).content)
-	response_2 = str(requests.get("http://movies/netflix-movies",headers=HEADERS).content)
-	response_3 = str(requests.get("http://recommendation-engine/netflix-recommendation-engine",headers=HEADERS).content)
+	response_1 = str(requests.get("http://tv-shows-service/netflix-tv-shows",headers=HEADERS).content)
+	response_2 = str(requests.get("http://movies-service/netflix-movies",headers=HEADERS).content)
+	response_3 = str(requests.get("http://recommendation-engine-service/netflix-recommendation-engine",headers=HEADERS).content)
 	return '\n'.join([response_1,response_2,response_3])
 
 @app.route('/netflix-frontend')
@@ -38,13 +38,13 @@ def netflix_frontend():
 @app.route('/netflix-tv-shows')
 def netflix_tv_shows():
 	HEADERS = set_trace_headers(request)
-	response = requests.get("http://metadata-store/netflix-metadata-store?type=movie",headers=HEADERS)
+	response = requests.get("http://metadata-store-service/netflix-metadata-store?type=movie",headers=HEADERS)
 	return 'Tv Shows List: %s'%(response.content)
 
 @app.route('/netflix-movies')
 def netflix_movies():
 	HEADERS = set_trace_headers(request)
-	response = requests.get("http://metadata-store/netflix-metadata-store?type=tv-show",headers=HEADERS)
+	response = requests.get("http://metadata-store-service/netflix-metadata-store?type=tv-show",headers=HEADERS)
 	return 'Movies List: %s'%(response.content)
 
 @app.route('/netflix-metadata-store')
@@ -74,47 +74,47 @@ def telemetry_store():
 @app.route('/tv-shows')
 def tv_shows():
 	HEADERS = set_trace_headers(request)
-	response = requests.get("http://tv-shows/netflix-tv-shows",headers=HEADERS)
+	response = requests.get("http://tv-shows-service/netflix-tv-shows",headers=HEADERS)
 	return response.content
 
 @app.route('/movies')
 def movies():
 	HEADERS = set_trace_headers(request)
-	response = requests.get("http://movies/netflix-movies",headers=HEADERS)
+	response = requests.get("http://movies-service/netflix-movies",headers=HEADERS)
 	return response.content
 
 @app.route('/recommendation-engine')
 def recommendation_engine():
 	HEADERS = set_trace_headers(request)
-	response = requests.get("http://recommendation-engine/netflix-recommendation-engine",headers=HEADERS)
+	response = requests.get("http://recommendation-engine-service/netflix-recommendation-engine",headers=HEADERS)
 	return response.content
 
 @app.route('/netflix-recommendation-engine')
 def netflix_recommendation_engine():
 	HEADERS = set_trace_headers(request)
-	response_1 = str(requests.get("http://trending/netflix-trending",headers=HEADERS).content)
-	response_2 = str(requests.get("http://similarity-calculator/netflix-similarity-calculator",headers=HEADERS).content)
-	response_3 = str(requests.get("http://mutual-friends-interests/netflix-mutual-friends-interests",headers=HEADERS).content)
+	response_1 = str(requests.get("http://trending-service/netflix-trending",headers=HEADERS).content)
+	response_2 = str(requests.get("http://similarity-calculator-service/netflix-similarity-calculator",headers=HEADERS).content)
+	response_3 = str(requests.get("http://mutual-friends-interests-service/netflix-mutual-friends-interests",headers=HEADERS).content)
 	return '\n'.join([response_1,response_2,response_3])
 
 @app.route('/netflix-trending')
 def netflix_trending():
 	HEADERS = set_trace_headers(request)
-	time.sleep(1)
-	response = str(requests.get("http://telemetry-store/telemetry-store",headers=HEADERS).content)
+	# time.sleep(1)
+	response = str(requests.get("http://telemetry-store-service/telemetry-store",headers=HEADERS).content)
 	return response
 
 @app.route('/netflix-similarity-calculator')
 def netflix_similarity_calculator():
 	HEADERS = set_trace_headers(request)
-	time.sleep(1)
-	response = str(requests.get("http://telemetry-store/telemetry-store",headers=HEADERS).content)
+	# time.sleep(1)
+	response = str(requests.get("http://telemetry-store-service/telemetry-store",headers=HEADERS).content)
 	return response
 
 @app.route('/netflix-mutual-friends-interests')
 def netflix_mutual_friends_interests():
 	HEADERS = set_trace_headers(request)
-	time.sleep(1)
-	response = str(requests.get("http://telemetry-store/telemetry-store",headers=HEADERS).content)
+	# time.sleep(1)
+	response = str(requests.get("http://telemetry-store-service/telemetry-store",headers=HEADERS).content)
 	return response
 
