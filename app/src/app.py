@@ -21,100 +21,85 @@ def set_trace_headers(req):
             headers[header] = req.headers[header]
     return headers
 
-data = open('netflix_titles.csv','r')
-
-@app.route('/')
-def main_page():
-	HEADERS = set_trace_headers(request)
-	response_1 = str(requests.get("http://tv-shows-service/netflix-tv-shows",headers=HEADERS).content)
-	response_2 = str(requests.get("http://movies-service/netflix-movies",headers=HEADERS).content)
-	response_3 = str(requests.get("http://recommendation-engine-service/netflix-recommendation-engine",headers=HEADERS).content)
-	return '\n'.join([response_1,response_2,response_3])
-
 @app.route('/netflix-frontend')
 def netflix_frontend():
-	return 'Welcome to our Netflix Clone Website!! <br/> We have a lot of features!!!  <br/> &nbsp;&nbsp; List of shows  <br/> &nbsp;&nbsp; Recommendations  <br/> &nbsp;&nbsp; Friends'
+	return 'Welcome to our Netflix Clone Website!! <br/> We have a lot of features!!!  <br/>'
 
 @app.route('/netflix-tv-shows')
 def netflix_tv_shows():
 	HEADERS = set_trace_headers(request)
-	response = requests.get("http://metadata-store-service/netflix-metadata-store?type=movie",headers=HEADERS)
-	return 'Tv Shows List: %s'%(response.content)
+	response = str(requests.get("http://metadata-store-service/netflix-metadata-store?type=movie",headers=HEADERS).content)
+	return 'Tv Shows List: %s'%(response)
 
 @app.route('/netflix-movies')
 def netflix_movies():
 	HEADERS = set_trace_headers(request)
-	response = requests.get("http://metadata-store-service/netflix-metadata-store?type=tv-show",headers=HEADERS)
-	return 'Movies List: %s'%(response.content)
+	response = str(requests.get("http://metadata-store-service/netflix-metadata-store?type=tv-show",headers=HEADERS).content)
+	return 'Movies List: %s'%(response)
 
 @app.route('/netflix-metadata-store')
 def netflix_metdata_store():
 	type_param = request.args.get('type',None)
-	reader = csv.DictReader(open('netflix_titles.csv'))
 	if type_param == None:
-		filtered = filter(lambda row: row, reader)
+		return 'No Type Parameter Found', 500
 	elif type_param=='tv-show':
-		filtered = filter(lambda row: row['type'] == 'TV Show', reader)
+		return 'Dexter <br/> The Office <br/> Mr Robot <br/>'
 	elif type_param=='movie':
-		filtered = filter(lambda row: row['type'] == 'Movie', reader)
-	return str(list(filtered))
+		return 'Shutter Island <br/> Shawshank Redemption <br/> Gone Girl <br/>'
 
 @app.route('/telemetry-store')
 def telemetry_store():
-	type_param = request.args.get('type',None)
-	reader = csv.DictReader(open('netflix_titles.csv'))
-	if type_param == None:
-		filtered = filter(lambda row: row, reader)
-	elif type_param=='tv-show':
-		filtered = filter(lambda row: row['type'] == 'TV Show', reader)
-	elif type_param=='movie':
-		filtered = filter(lambda row: row['type'] == 'Movie', reader)
-	return str(list(filtered))
+	return 'Shutter Island <br/> Shawshank Redemption <br/> Gone Girl <br/>'
 
 @app.route('/tv-shows')
 def tv_shows():
 	HEADERS = set_trace_headers(request)
-	response = requests.get("http://tv-shows-service/netflix-tv-shows",headers=HEADERS)
-	return response.content
+	response = str(requests.get("http://tv-shows-service/netflix-tv-shows",headers=HEADERS).content)
+	return 'TV Show Page: <br/> <br/>' + response
 
 @app.route('/movies')
 def movies():
 	HEADERS = set_trace_headers(request)
-	response = requests.get("http://movies-service/netflix-movies",headers=HEADERS)
-	return response.content
+	response = str(requests.get("http://movies-service/netflix-movies",headers=HEADERS).content)
+	return 'Movies Page: <br/> <br/>' + response
 
 @app.route('/recommendation-engine')
 def recommendation_engine():
 	HEADERS = set_trace_headers(request)
-	response = requests.get("http://recommendation-engine-service/netflix-recommendation-engine",headers=HEADERS)
-	return response.content
+	type_param = request.args.get('type',None)
+	response = str(requests.get("http://recommendation-engine-service/netflix-recommendation-engine?type=%s"%(type_param),headers=HEADERS).content)
+	return response
 
 @app.route('/netflix-recommendation-engine')
 def netflix_recommendation_engine():
 	HEADERS = set_trace_headers(request)
-	response_1 = str(requests.get("http://trending-service/netflix-trending",headers=HEADERS).content)
-	response_2 = str(requests.get("http://similarity-calculator-service/netflix-similarity-calculator",headers=HEADERS).content)
-	response_3 = str(requests.get("http://mutual-friends-interests-service/netflix-mutual-friends-interests",headers=HEADERS).content)
-	return '\n'.join([response_1,response_2,response_3])
+	type_param = request.args.get('type',None)
+	if type_param == 'trending':
+		response = str(requests.get("http://trending-service/netflix-trending",headers=HEADERS).content)
+	elif type_param == 'similar-shows':
+		response = str(requests.get("http://similarity-calculator-service/netflix-similarity-calculator",headers=HEADERS).content)
+	else:
+		response = str(requests.get("http://mutual-friends-interests-service/netflix-mutual-friends-interests",headers=HEADERS).content)
+	return response
 
 @app.route('/netflix-trending')
 def netflix_trending():
 	HEADERS = set_trace_headers(request)
 	# time.sleep(1)
 	response = str(requests.get("http://telemetry-store-service/telemetry-store",headers=HEADERS).content)
-	return response
+	return 'Trending Page: <br/> <br/>' + response
 
 @app.route('/netflix-similarity-calculator')
 def netflix_similarity_calculator():
 	HEADERS = set_trace_headers(request)
 	# time.sleep(1)
 	response = str(requests.get("http://telemetry-store-service/telemetry-store",headers=HEADERS).content)
-	return response
+	return 'Similar Shows: <br/> <br/>' + response
 
 @app.route('/netflix-mutual-friends-interests')
 def netflix_mutual_friends_interests():
 	HEADERS = set_trace_headers(request)
 	# time.sleep(1)
 	response = str(requests.get("http://telemetry-store-service/telemetry-store",headers=HEADERS).content)
-	return response
+	return 'Mutual Friend interests: <br/> <br/>' + response
 
