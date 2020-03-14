@@ -2,6 +2,7 @@ from flask import Flask, request
 import requests
 import time
 import csv
+import random
 app = Flask(__name__)
 
 TRACE_HEADERS_TO_PROPAGATE = [ \
@@ -49,7 +50,15 @@ def netflix_metdata_store():
 
 @app.route('/telemetry-store')
 def telemetry_store():
-	return 'Shutter Island <br/> Shawshank Redemption <br/> Gone Girl <br/>'
+	type_param = request.args.get('type',None)
+	if type_param=='current-trends':
+		return 'Shutter Island <br/> Shawshank Redemption <br/> Gone Girl <br/>'
+	elif type_param=='similar-shows':
+		return 'Mr Robot<br/> Death on the nile <br/> Stranger things<br/>'
+	elif type_param == 'mutual-friends-interests':
+		return "The girl on the traon <br/> Shawshank Redemption <br/> Gone Girl <br/>'"
+	else:
+		return 'TYPE NOT FOUND', 500
 
 @app.route('/tv-shows')
 def tv_shows():
@@ -75,31 +84,39 @@ def netflix_recommendation_engine():
 	HEADERS = set_trace_headers(request)
 	type_param = request.args.get('type',None)
 	if type_param == 'trending':
-		response = str(requests.get("http://trending-service/netflix-trending",headers=HEADERS).content)
+		response = requests.get("http://trending-service/netflix-trending?type=current-trends",headers=HEADERS)
 	elif type_param == 'similar-shows':
-		response = str(requests.get("http://similarity-calculator-service/netflix-similarity-calculator",headers=HEADERS).content)
+		response = requests.get("http://similarity-calculator-service/netflix-similarity-calculator",headers=HEADERS)
+	elif type_param == 'mutual-friends-interests':
+		response = requests.get("http://mutual-friends-interests-service/netflix-mutual-friends-interests",headers=HEADERS)
 	else:
-		response = str(requests.get("http://mutual-friends-interests-service/netflix-mutual-friends-interests",headers=HEADERS).content)
-	return response
+		response = requests.get("http://trending-service/netflix-trending?type=%s"%(type_param),headers=HEADERS)
+	if response.status_code != 200:
+		return 'Recommendation Engine Error', 500
+	else:
+		return str(response.content)
 
 @app.route('/netflix-trending')
 def netflix_trending():
 	HEADERS = set_trace_headers(request)
 	# time.sleep(1)
-	response = str(requests.get("http://telemetry-store-service/telemetry-store",headers=HEADERS).content)
-	return 'Trending Page: <br/> <br/>' + response
+	type_param = request.args.get('type',None)
+	response = requests.get("http://telemetry-store-service/telemetry-store?type=%s"%(type_param),headers=HEADERS)
+	if response.status_code != 200:
+		return 'Trending Page Error', 500
+	return 'Trending Page: <br/> <br/>' + str(response.content)
 
 @app.route('/netflix-similarity-calculator')
 def netflix_similarity_calculator():
 	HEADERS = set_trace_headers(request)
 	# time.sleep(1)
-	response = str(requests.get("http://telemetry-store-service/telemetry-store",headers=HEADERS).content)
+	response = str(requests.get("http://telemetry-store-service/telemetry-store?type=similar",headers=HEADERS).content)
 	return 'Similar Shows: <br/> <br/>' + response
 
 @app.route('/netflix-mutual-friends-interests')
 def netflix_mutual_friends_interests():
 	HEADERS = set_trace_headers(request)
 	# time.sleep(1)
-	response = str(requests.get("http://telemetry-store-service/telemetry-store",headers=HEADERS).content)
+	response = str(requests.get("http://telemetry-store-service/telemetry-store?type=mutual-friends-interests",headers=HEADERS).content)
 	return 'Mutual Friend interests: <br/> <br/>' + response
 

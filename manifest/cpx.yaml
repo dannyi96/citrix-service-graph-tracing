@@ -143,9 +143,6 @@ spec:
   - port: 80
     protocol: TCP
     name: http
-  - port: 443
-    protocol: TCP
-    name: https
   selector:
     app: cpx-ingress
 
@@ -161,9 +158,6 @@ spec:
   - name: netflix-frontend-80
     port: 80
     targetPort: 80
-  - name: netflix-frontend-443
-    port: 443
-    targetPort: 443
   selector:
     app: cpx-ingress
 
@@ -178,9 +172,6 @@ spec:
   - name: tv-shows-80
     port: 80
     targetPort: 80
-  - name: tv-shows-443
-    port: 443
-    targetPort: 443
   selector:
     app: cpx-ingress
 
@@ -195,9 +186,6 @@ spec:
   - name: movies-80
     port: 80
     targetPort: 80
-  - name: movies-443
-    port: 443
-    targetPort: 443
   selector:
     app: cpx-ingress
     
@@ -212,9 +200,6 @@ spec:
   - name: metadata-store-80
     port: 80
     targetPort: 80
-  - name: metadata-store-443
-    port: 443
-    targetPort: 443
   selector:
     app: cpx-ingress
     
@@ -229,9 +214,6 @@ spec:
   - name: recommendation-engine-80
     port: 80
     targetPort: 80
-  - name: recommendation-engine-443
-    port: 443
-    targetPort: 443
   selector:
     app: cpx-ingress
     
@@ -246,9 +228,6 @@ spec:
   - name: similarity-calculator-80
     port: 80
     targetPort: 80
-  - name: similarity-calculator-443
-    port: 443
-    targetPort: 443
   selector:
     app: cpx-ingress
     
@@ -263,9 +242,6 @@ spec:
   - name: mutual-friends-interests-80
     port: 80
     targetPort: 80
-  - name: mutual-friends-interests-443
-    port: 443
-    targetPort: 443
   selector:
     app: cpx-ingress
     
@@ -280,9 +256,6 @@ spec:
   - name: trending-80
     port: 80
     targetPort: 80
-  - name: trending-443
-    port: 443
-    targetPort: 443
   selector:
     app: cpx-ingress
     
@@ -297,9 +270,6 @@ spec:
   - name: telemetry-store-80
     port: 80
     targetPort: 80
-  - name: telemetry-store-443
-    port: 443
-    targetPort: 443
   selector:
     app: cpx-ingress
     
