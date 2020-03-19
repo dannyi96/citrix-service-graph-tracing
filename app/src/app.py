@@ -110,7 +110,7 @@ def netflix_trending():
 def netflix_similarity_calculator():
 	HEADERS = set_trace_headers(request)
 	# time.sleep(1)
-	response = str(requests.get("http://telemetry-store-service/telemetry-store?type=similar",headers=HEADERS).content)
+	response = str(requests.get("http://telemetry-store-service/telemetry-store?type=similar-shows",headers=HEADERS).content)
 	return 'Similar Shows: <br/> <br/>' + response
 
 @app.route('/netflix-mutual-friends-interests')
