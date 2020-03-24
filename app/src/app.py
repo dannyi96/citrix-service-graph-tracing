@@ -119,4 +119,3 @@ def netflix_mutual_friends_interests():
 	# time.sleep(1)
 	response = str(requests.get("http://telemetry-store-service/telemetry-store?type=mutual-friends-interests",headers=HEADERS).content)
 	return 'Mutual Friend interests: <br/> <br/>' + response
-
