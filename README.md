@@ -5,14 +5,14 @@ This microservice application, which was mainly developed to showcase use cases 
 
 ![](images/service-graph.png)
 
-![](images/topology.png)
-
-
 ## Use cases of Distributed Tracing
 * Helps in Performance RCA to understand which service is consuming most time for a given end-user request.
 * Helps in reproducing issues as it gives visibility into the entire trace. Such issues would be otherwise difficut to reproduce.
 * Can reduce inter-team dependencies when issues arise as the root service causing issues can be immediately found out.
 * Helps Admins in understanding the behaviour of the entire application as a whole.
+
+## Topology used
+![](images/topology.png)
 
 ## Pre-requisites
 1. An ADM Agent
