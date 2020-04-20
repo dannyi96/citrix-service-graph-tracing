@@ -54,7 +54,7 @@ On selecting “Trace Info” on any of the service graph node (say recommendati
 ![](images/trace-info.png)
 ![](images/trace-transactions.png)
 
-On Drilling down on each transaction span by clicking the arrow in each row, you’ll see the details of the trace corresponding to that span transaction, including - Number of Spans & Unique Services taking part in that trace,  List of services taking part in that trace and Time along with percentage spent in each service, Number of errors from every service & Client-side metrics of that transaction – Start Time, End Time & various SSL client metrics.
+On Drilling down on each transaction span by clicking the arrow in each row, you’ll see the details of the trace corresponding to that span transaction.
 
 ![](images/trace-drilldown-on-graph.png)
 
