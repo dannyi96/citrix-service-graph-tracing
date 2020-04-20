@@ -1,4 +1,4 @@
-# Citrix ADM Service Graph Distibuted Tracing
+# Citrix ADM Service Graph Distributed Tracing
 Visualize the request flow between different microservices using Citrix ADM ! 
 
 This microservice application, which was mainly developed to showcase use cases of Citrix ADM Distributed Tracing, is a dummy Netflix application which allows users to see list of movies, tv shows and makes recommendation based on factors like friends interests, similar shows & trends.
@@ -50,10 +50,15 @@ Send traffic
 
 ## Details of Traces
 
-Click any Service node and Select "Trace Info" to get list of all transactions that service has taken part in. On further drilling down, you can see details of all Services in that Trace.
+On selecting “Trace Info” on any of the service graph node (say recommendation-engine), you can see all the transactions (aka spans) that the selected service has taken part in for a selected duration. 
+![](images/trace-info.png)
+![](images/trace-transactions.png)
+
+On Drilling down on each transaction span by clicking the arrow in each row, you’ll see the details of the trace corresponding to that span transaction, including - Number of Spans & Unique Services taking part in that trace,  List of services taking part in that trace and Time along with percentage spent in each service, Number of errors from every service & Client-side metrics of that transaction – Start Time, End Time & various SSL client metrics.
+
 ![](images/trace-drilldown-on-graph.png)
 
-Select "View Trace Info" to get list of all transactions in that trace and details of each transaction.
+A user can select “See Trace Details” to visualize the entire trace in the form of a chart of all transactions which are part of the trace 
 ![](images/trace-view.png)
 
 
