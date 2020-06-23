@@ -62,6 +62,3 @@ On Drilling down on each transaction span by clicking the arrow in each row, you
 
 A user can select “See Trace Details” to visualize the entire trace in the form of a chart of all transactions which are part of the trace 
 ![](images/trace-view.png)
-
-
-## More Updates will be made to this Readme
