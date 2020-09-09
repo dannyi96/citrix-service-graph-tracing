@@ -59,12 +59,15 @@ metadata:
 
 ---
 
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1 
 kind: Deployment
 metadata:
   name: cpx-ingress
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+     app: cpx-ingress
   template:
     metadata:
       name: cpx-ingress
@@ -75,7 +78,7 @@ spec:
       serviceAccountName: cpx-ingress-k8s-role
       containers:
         - name: cpx-ingress
-          image: "quay.io/citrix/citrix-k8s-cpx-ingress:13.0-47.103"
+          image: "quay.io/citrix/citrix-k8s-cpx-ingress:13.0-58.30"
           securityContext:
              privileged: true
           env:
@@ -84,15 +87,19 @@ spec:
           - name: "KUBERNETES_TASK_ID"
             value: ""
           - name: "NS_MGMT_SERVER"
-            value: "10.106.192.44"
+            value: "10.106.192.145"
           - name: "NS_MGMT_FINGER_PRINT"
-            value: "C5:8F:CB:8B:4C:5D:36:F3:C8:8B:82:B4:F6:3A:E1:46:99:D6:0F:EE"
+            value: "DE:56:1F:70:AC:3E:A8:E3:CE:81:5E:FF:9C:72:0B:D1:FA:4E:C3:33"
           - name: "NS_HTTP_PORT"
             value: "9080"
           - name: "NS_HTTPS_PORT"
             value: "9443"
           - name: "LOGSTREAM_COLLECTOR_IP"
-            value: "10.106.192.44"
+            value: "10.106.192.145"
+          - name: "NS_MGMT_USER"
+            value: "nsroot"
+          - name: "NS_MGMT_PASS"
+            value: "TTls123$%^"
           imagePullPolicy: IfNotPresent
         # Add cic as a sidecar
         - name: cic
@@ -113,7 +120,7 @@ spec:
           - name: "NS_DISTRIBUTED_TRACING"
             value: "yes"
           - name: "NS_LOGPROXY"
-            value: "10.106.192.44"
+            value: "10.106.192.145"
           - name: POD_NAME
             valueFrom:
               fieldRef:
