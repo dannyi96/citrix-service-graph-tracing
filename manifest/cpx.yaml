@@ -78,7 +78,7 @@ spec:
       serviceAccountName: cpx-ingress-k8s-role
       containers:
         - name: cpx-ingress
-          image: "quay.io/citrix/citrix-k8s-cpx-ingress:13.0-58.30"
+          image: "quay.io/citrix/citrix-k8s-cpx-ingress:13.0-64.35"
           securityContext:
              privileged: true
           env:
@@ -101,9 +101,12 @@ spec:
           - name: "NS_MGMT_PASS"
             value: "TTls123$%^"
           imagePullPolicy: IfNotPresent
+          volumeMounts:
+          - mountPath: /var/deviceinfo
+            name: shared-data 
         # Add cic as a sidecar
         - name: cic
-          image: "quay.io/citrix/citrix-k8s-ingress-controller:1.5.6"
+          image: "quay.io/citrix/citrix-k8s-ingress-controller:1.9.9"
           env:
           - name: "EULA"
             value: "yes"
@@ -121,20 +124,23 @@ spec:
             value: "yes"
           - name: "NS_LOGPROXY"
             value: "10.106.192.145"
-          - name: POD_NAME
-            valueFrom:
-              fieldRef:
-                apiVersion: v1
-                fieldPath: metadata.name
-          - name: POD_NAMESPACE
-            valueFrom:
-              fieldRef:
-                apiVersion: v1
-                fieldPath: metadata.namespace
+          envFrom:
+          - configMapRef:
+              name: cic-configmap
           args:
             - --ingress-classes
               netflix-cpx
           imagePullPolicy: Always
+          volumeMounts:
+          - mountPath: /var/deviceinfo
+            name: shared-data
+      volumes:
+      - name: shared-data
+        emptyDir: {}
+      - name: cpx-volume1
+        emptyDir: {}
+      - name: cpx-volume2
+        emptyDir: {}
 
 ---
 
