@@ -120,8 +120,6 @@ spec:
             value: "SIDECAR"
           - name: "NS_ENABLE_MONITORING"
             value: "YES"
-          - name: "NS_DISTRIBUTED_TRACING"
-            value: "yes"
           - name: "NS_LOGPROXY"
             value: "10.106.192.145"
           envFrom:
@@ -154,6 +152,7 @@ spec:
   type: NodePort
   ports:
   - port: 80
+    nodePort: 30001
     protocol: TCP
     name: http
   selector:

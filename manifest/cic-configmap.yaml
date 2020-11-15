@@ -10,7 +10,7 @@ data:
    NS_HTTP2_SERVER_SIDE: 'ON'
    NS_ANALYTICS_CONFIG: |
      distributed_tracing:
-       enable: 'false'
+       enable: 'true'
        samplingrate: 100
      endpoint:
        server: '10.106.192.145'
