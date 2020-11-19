@@ -1,0 +1,24 @@
+# Default values for Netflix Application
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+cic_image: "quay.io/citrix/citrix-k8s-ingress-controller:1.9.9"
+
+cpx_image: "quay.io/citrix/citrix-k8s-cpx-ingress:13.0-64.35"
+
+cic_configmap:
+  distributed_tracing: true
+  metrics: true
+  transactions: false
+  auditlogs: false
+  events: false
+
+ADM_config:
+  ip_address:
+  fingerprint:
+  username:
+  password:
+
+cpx_nodeport: 30001
+
+app_replicas: 1

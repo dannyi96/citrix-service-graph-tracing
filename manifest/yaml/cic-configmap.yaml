@@ -13,7 +13,7 @@ data:
        enable: 'true'
        samplingrate: 100
      endpoint:
-       server: '10.106.192.145'
+       server: 'A.B.C.D'
      timeseries: 
        port: 5563 
        metrics:

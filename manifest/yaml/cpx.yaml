@@ -1,0 +1,288 @@
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: cpx-ingress-k8s-role
+rules:
+  - apiGroups: [""]
+    resources: ["endpoints", "ingresses", "pods", "secrets", "nodes", "routes", "namespaces"]
+    verbs: ["get", "list", "watch"]
+  # services/status is needed to update the loadbalancer IP in service status for integrating
+  # service of type LoadBalancer with external-dns
+  - apiGroups: [""]
+    resources: ["services/status"]
+    verbs: ["patch"]
+  - apiGroups: [""]
+    resources: ["services"]
+    verbs: ["get", "list", "watch", "patch"]
+  - apiGroups: ["extensions"]
+    resources: ["ingresses", "ingresses/status"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["apiextensions.k8s.io"]
+    resources: ["customresourcedefinitions"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["citrix.com"]
+    resources: ["rewritepolicies", "canarycrds", "authpolicies", "ratelimits"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["citrix.com"]
+    resources: ["vips"]
+    verbs: ["get", "list", "watch", "create", "delete"]
+  - apiGroups: ["route.openshift.io"]
+    resources: ["routes"]
+    verbs: ["get", "list", "watch"]
+
+---
+
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: cpx-ingress-k8s-role
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cpx-ingress-k8s-role
+subjects:
+- kind: ServiceAccount
+  name: cpx-ingress-k8s-role
+  namespace: default
+apiVersion: rbac.authorization.k8s.io/v1
+
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cpx-ingress-k8s-role
+  namespace: default
+
+---
+
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: cpx-ingress
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+     app: cpx-ingress
+  template:
+    metadata:
+      name: cpx-ingress
+      labels:
+        app: cpx-ingress
+      annotations:
+    spec:
+      serviceAccountName: cpx-ingress-k8s-role
+      containers:
+        - name: cpx-ingress
+          image: "quay.io/citrix/citrix-k8s-cpx-ingress:13.0-64.35"
+          securityContext:
+             privileged: true
+          env:
+          - name: "EULA"
+            value: "yes"
+          - name: "KUBERNETES_TASK_ID"
+            value: ""
+          - name: "NS_MGMT_SERVER"
+            value: "A.B.C.D"
+          - name: "NS_MGMT_FINGER_PRINT"
+            value: "XXXXXXXXXXXXXX"
+          - name: "NS_HTTP_PORT"
+            value: "9080"
+          - name: "NS_HTTPS_PORT"
+            value: "9443"
+          - name: "LOGSTREAM_COLLECTOR_IP"
+            value: "A.B.C.D"
+          - name: "NS_MGMT_USER"
+            value: "XXXXXXXXXXXXXX"
+          - name: "NS_MGMT_PASS"
+            value: "XXXXXXXXXXXXXX"
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+          - mountPath: /var/deviceinfo
+            name: shared-data 
+        # Add cic as a sidecar
+        - name: cic
+          image: "quay.io/citrix/citrix-k8s-ingress-controller:1.9.9"
+          env:
+          - name: "EULA"
+            value: "yes"
+          - name: "NS_IP"
+            value: "127.0.0.1"
+          - name: "NS_PROTOCOL"
+            value: "HTTP"
+          - name: "NS_PORT"
+            value: "80"
+          - name: "NS_DEPLOYMENT_MODE"
+            value: "SIDECAR"
+          - name: "NS_ENABLE_MONITORING"
+            value: "YES"
+          - name: "NS_LOGPROXY"
+            value: "A.B.C.D"
+          envFrom:
+          - configMapRef:
+              name: cic-configmap
+          args:
+            - --ingress-classes
+              netflix-cpx
+          imagePullPolicy: Always
+          volumeMounts:
+          - mountPath: /var/deviceinfo
+            name: shared-data
+      volumes:
+      - name: shared-data
+        emptyDir: {}
+      - name: cpx-volume1
+        emptyDir: {}
+      - name: cpx-volume2
+        emptyDir: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: cpx-ingress
+  labels:
+    app: cpx-ingress
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    nodePort: 30001
+    protocol: TCP
+    name: http
+  selector:
+    app: cpx-ingress
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: netflix-frontend-service
+spec:
+  ports:
+  - name: netflix-frontend-80
+    port: 80
+    targetPort: 80
+  selector:
+    app: cpx-ingress
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: tv-shows-service
+spec:
+  ports:
+  - name: tv-shows-80
+    port: 80
+    targetPort: 80
+  selector:
+    app: cpx-ingress
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: movies-service
+spec:
+  ports:
+  - name: movies-80
+    port: 80
+    targetPort: 80
+  selector:
+    app: cpx-ingress
+    
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: metadata-store-service
+spec:
+  ports:
+  - name: metadata-store-80
+    port: 80
+    targetPort: 80
+  selector:
+    app: cpx-ingress
+    
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: recommendation-engine-service
+spec:
+  ports:
+  - name: recommendation-engine-80
+    port: 80
+    targetPort: 80
+  selector:
+    app: cpx-ingress
+    
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: similarity-calculator-service
+spec:
+  ports:
+  - name: similarity-calculator-80
+    port: 80
+    targetPort: 80
+  selector:
+    app: cpx-ingress
+    
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mutual-friends-interests-service
+spec:
+  ports:
+  - name: mutual-friends-interests-80
+    port: 80
+    targetPort: 80
+  selector:
+    app: cpx-ingress
+    
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: trending-service
+spec:
+  ports:
+  - name: trending-80
+    port: 80
+    targetPort: 80
+  selector:
+    app: cpx-ingress
+    
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: telemetry-store-service
+spec:
+  ports:
+  - name: telemetry-store-80
+    port: 80
+    targetPort: 80
+  selector:
+    app: cpx-ingress
+    
+---

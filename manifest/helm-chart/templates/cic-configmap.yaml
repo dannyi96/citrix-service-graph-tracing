@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cic-configmap
+  namespace: default
+data:
+   LOGLEVEL: 'debug'
+   NS_PROTOCOL: 'http'
+   NS_PORT: '80'
+   NS_HTTP2_SERVER_SIDE: 'ON'
+   NS_ANALYTICS_CONFIG: |
+     distributed_tracing:
+       enable: {{ required "A valid distributed_tracing flag required!" .Values.cic_configmap.distributed_tracing | quote }}
+       samplingrate: 100
+     endpoint:
+       server: {{ required "A valid endpoint flag required!" .Values.ADM_config.ip_address | quote }}
+     timeseries: 
+       port: 5563 
+       metrics:
+         enable: {{ required "A valid metrics flag required!" .Values.cic_configmap.metrics | quote }}
+         mode: 'avro' 
+       auditlogs:
+         enable: {{ required "A valid auditlogs flag required!" .Values.cic_configmap.auditlogs | quote }}
+       events: 
+         enable: {{ required "A valid events flag required!" .Values.cic_configmap.events | quote }}
+     transactions:
+       enable: {{ required "A valid transactions flag required!" .Values.cic_configmap.transactions | quote }}
+       port: 5557

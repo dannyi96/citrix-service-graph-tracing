@@ -1,0 +1,15 @@
+
+# WARNING: This file should not be edited, if you need to make any kind of changes, change corresponding template file
+
+# Copyright 2010-2016 Citrix Systems, Inc. All rights reserved.
+# This software and documentation contain valuable trade
+# secrets and proprietary property belonging to Citrix Systems, Inc.
+# None of this software and documentation may be copied,
+# duplicated or disclosed without the express
+# written permission of Citrix Systems, Inc.
+
+apiVersion: v1
+name: netflix
+version: 1.0
+appVersion: 1.0
+description: Netflix Demo Application

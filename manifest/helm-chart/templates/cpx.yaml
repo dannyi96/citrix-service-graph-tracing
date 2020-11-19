@@ -78,7 +78,7 @@ spec:
       serviceAccountName: cpx-ingress-k8s-role
       containers:
         - name: cpx-ingress
-          image: "quay.io/citrix/citrix-k8s-cpx-ingress:13.0-64.35"
+          image: {{ required "A valid cpx image required!" .Values.cpx_image | quote }}
           securityContext:
              privileged: true
           env:
@@ -87,26 +87,26 @@ spec:
           - name: "KUBERNETES_TASK_ID"
             value: ""
           - name: "NS_MGMT_SERVER"
-            value: "10.106.192.145"
+            value: {{ required "A valid adm server/agent ip required!" .Values.ADM_config.ip_address | quote }}
           - name: "NS_MGMT_FINGER_PRINT"
-            value: "DE:56:1F:70:AC:3E:A8:E3:CE:81:5E:FF:9C:72:0B:D1:FA:4E:C3:33"
+            value: {{ required "A valid adm server/agent fingerprint required!" .Values.ADM_config.fingerprint | quote }}
           - name: "NS_HTTP_PORT"
             value: "9080"
           - name: "NS_HTTPS_PORT"
             value: "9443"
           - name: "LOGSTREAM_COLLECTOR_IP"
-            value: "10.106.192.145"
+            value: {{ required "A valid adm server/agent ip required!" .Values.ADM_config.ip_address | quote }}
           - name: "NS_MGMT_USER"
-            value: "nsroot"
+            value: {{ required "A valid adm server/agent username required!" .Values.ADM_config.username | quote }}
           - name: "NS_MGMT_PASS"
-            value: "TTls123$%^"
+            value: {{ required "A valid adm server/agent password required!" .Values.ADM_config.password | quote }}
           imagePullPolicy: IfNotPresent
           volumeMounts:
           - mountPath: /var/deviceinfo
             name: shared-data 
         # Add cic as a sidecar
         - name: cic
-          image: "quay.io/citrix/citrix-k8s-ingress-controller:1.9.9"
+          image: {{ required "A valid cic image required!" .Values.cic_image | quote }}
           env:
           - name: "EULA"
             value: "yes"
@@ -121,7 +121,7 @@ spec:
           - name: "NS_ENABLE_MONITORING"
             value: "YES"
           - name: "NS_LOGPROXY"
-            value: "10.106.192.145"
+            value: {{ required "A valid adm server/agent ip required!" .Values.ADM_config.ip_address | quote }}
           envFrom:
           - configMapRef:
               name: cic-configmap
@@ -152,7 +152,7 @@ spec:
   type: NodePort
   ports:
   - port: 80
-    nodePort: 30001
+    nodePort: {{ required "A valid cpx service nodePort required!" .Values.cpx_nodeport }}
     protocol: TCP
     name: http
   selector:

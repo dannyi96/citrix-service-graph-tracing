@@ -1,0 +1,35 @@
+# CIC Image to be used
+cic_image: "quay.io/citrix/citrix-k8s-ingress-controller:1.9.9"
+
+# CPX Image to be used
+cpx_image: "quay.io/citrix/citrix-k8s-cpx-ingress:13.0-64.35"
+
+# CIC ConfigMap Parameters
+cic_configmap:
+  # This variable enables or disables OpenTracing in Citrix ADC 
+  distributed_tracing: true
+  # This variable enables or disables exporting metrics from Citrix ADC
+  metrics: true
+  # This variable enables or disables exporting transactions from Citrix ADC
+  transactions: false
+  # This variable enables or disables exporting audit log data from Citrix ADC
+  auditlogs: false
+  # This variable enables or disables exporting events from Citrix ADC
+  events: false
+
+# ADM Related Info
+ADM_config:
+  # ADM Ip address
+  ip_address:
+  # ADM fingerprint
+  fingerprint:
+  # ADM credentials
+  # username & Password
+  username:
+  password:
+
+# NodePort to expose cpx service
+cpx_nodeport: 30001
+
+# Replicas to be used for each netflix application pod
+app_replicas: 1
