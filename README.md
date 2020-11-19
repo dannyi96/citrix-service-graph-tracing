@@ -66,9 +66,8 @@ The following table lists the configurable parameters and their default values i
 
    Run the below in the helm chart folder. 
 
-            ```
-            helm install netflix . --set <parameter_name>=<value> ...
-            ```
+      helm install netflix . --set <parameter_name>=<value> ...
+
 
 * Step 4:
 Send traffic using helper script
