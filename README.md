@@ -6,49 +6,75 @@ This microservice application, which was mainly developed to showcase use cases 
 
 ![](images/service-graph.png)
 
-
-## Use cases of Distributed Tracing
-* Helps in Performance RCA to understand which service is consuming most time for a given end-user request.
-* Helps in reproducing issues as it gives visibility into the entire trace. Such issues would be otherwise difficut to reproduce.
-* Can reduce inter-team dependencies when issues arise as the root service causing issues can be immediately found out.
-* Helps Admins in understanding the behaviour of the entire application as a whole.
-
 ## Topology used
 ![](images/topology.png)
 
 ## Pre-requisites
 1. An ADM Agent
-2. A Kubernetes Cluster
+2. Kubernetes Cluster to deploy the k8 app
 
 ## Steps
 
 * Step 1: Register your ADM Agent to the ADM setup ( either cloud or on-prem setup)
-* Step 2: Deploy the application on the cluser
-    * Step 2.1: Clone this repo
+* Step 2: Add cluster from ADM GUI. License the vservers of the CPX. ( Refer https://docs.citrix.com/en-us/citrix-application-delivery-management-service/application-analytics-and-management/sg-unified-single-ingress-topology.html#add-kubernetes-cluster-in-citrix-adm )
+* Step 3: Deploy the application on the cluster
+    * Step 3.1: Clone this repo
       ```
       git clone https://github.com/danny311296/citrix-service-graph-tracing
       cd citrix-service-graph-tracing
       ```
-    * Step 2.2: Update the cpx.yaml with Agent IP in "LOGSTREAM_COLLECTOR_IP" and "NS_LOGPROXY" enviroment variable & Agent Fingerprint in "NS_MGMT_FINGER_PRINT"
-    
-    * Step 2.3: Run
-      ```
-      kubectl create -f cpx.yaml
-      kubectl create -f ingress.yaml
-      kubectl create -f netflix.yaml
-      ```
-* Step 3: Add cluster from ADM GUI. License cs vservers of the CPX.
+    * Step 3.2: Deploy the application
+        * Option 1: Using YAML files
+            The YAML file are present under `manifest/yaml` 
+
+            Update the `cpx.yaml` with Agent IP in "LOGSTREAM_COLLECTOR_IP" and "NS_LOGPROXY", Agent Fingerprint in "NS_MGMT_FINGER_PRINT", Agent Username & Password in "NS_MGMT_USER" & "NS_MGMT_PASS"
+
+            Update the `cic-configmap.yaml` with Agent IP in endpoint.server of `NS_ANALYTICS_CONFIG`
+
+            Then run
+
+            ```
+            kubectl create -f cic-configmap.yaml
+            kubectl create -f cpx.yaml
+            kubectl create -f ingress.yaml
+            kubectl create -f netflix.yaml
+            ```
+
+        * Option 2: Using Helm Charts
+            The helm chart is present under `manifest/helm-chart`. 
+            
+            Configuration parameters:
+            
+The following table lists the configurable parameters and their default values in the Helm chart.
+
+
+| Parameter                      | Description                   | Default                   |
+|--------------------------------|-------------------------------|---------------------------|
+| `cic_image`                   | CIC image to be used                    |  "quay.io/citrix/citrix-k8s-ingress-controller:1.9.9"  |
+| `cpx_image`   | CPX image to be used | "quay.io/citrix/citrix-k8s-cpx-ingress:13.0-64.35"     |
+| `cic_configmap.distributed_tracing`     | This variable enables or disables OpenTracing in Citrix ADC   | true                       |
+| `cic_configmap.metrics`          | This variable enables or disables exporting metrics from Citrix ADC | true            |
+| `cic_configmap.transactions`          | This variable enables or disables exporting transactions from Citrix ADC | false            |
+| `cic_configmap.auditlogs`          | This variable enables or disables exporting audit log data from Citrix ADC | false            |
+| `cic_configmap.events`     | This variable enables or disables exporting events from Citrix ADC | false                       |
+| `ADM_config.ip_address`     | ADM Ip address | NIL                       |
+| `ADM_config.fingerprint`     | ADM fingerprint | NIL                       |
+| `ADM_config.username`     | ADM credentials username | NIL                       |
+| `ADM_config.password`     | ADM credentials password | NIL                       |
+| `cpx_nodeport`     | NodePort to expose cpx service | 30001                       |
+| `app_replicas`     | Replicas to be used for each netflix application pod | 1                       |
+
+   Run the below in the helm chart folder. 
+
+            ```
+            helm install netflix . --set <parameter_name>=<value> ...
+            ```
 
 * Step 4:
-Send traffic
+Send traffic using helper script
 ```
-    curl http://<CPX-IP>/tv-shows -H "Host: netflix-frontend-service"
-    curl http://<CPX-IP>/movies -H "Host: netflix-frontend-service"
-    curl http://<CPX-IP>/recommendation-engine?type=trending -H "Host: netflix-frontend-service"
-    curl http://<CPX-IP>/recommendation-engine?type=similar-shows -H "Host: netflix-frontend-service"
-    curl http://<CPX-IP>/recommendation-engine?type=mutual-friends-interests -H "Host: netflix-frontend-service" 
-    curl http://<CPX-IP>/recommendation-engine?type=best-shows -H "Host: netflix-frontend-service"
-  ```
+    nohup sh app/helper_scripts/send_traffic.sh > log &
+```
 
 ## Details of Traces
 
