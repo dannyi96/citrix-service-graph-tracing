@@ -1,8 +1,6 @@
 # Citrix ADM Service Graph Distributed Tracing
 
-Visualize the request flow between different microservices using Citrix ADM ! Check related [Citrix blog](https://www.citrix.com/blogs/2020/04/29/troubleshoot-cloud-native-apps-with-citrix-adm-distributed-tracing/)
-
-This microservice application, which was mainly developed to showcase use cases of Citrix ADM Distributed Tracing, is a dummy Netflix application which allows users to see list of movies, tv shows and makes recommendation based on factors like friends interests, similar shows & trends.
+Visualize the request flow between different microservices using Citrix ADM
 
 ![](images/service-graph.png)
 
