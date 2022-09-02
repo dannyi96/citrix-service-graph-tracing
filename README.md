@@ -1,6 +1,8 @@
 # Citrix ADM Service Graph Distributed Tracing
 
-Visualize the request flow between different microservices using Citrix ADM
+Visualize the request flow between different microservices using Citrix ADM 
+
+( Related Citrix blog - [blog link](https://www.citrix.com/blogs/2020/04/29/troubleshoot-cloud-native-apps-with-citrix-adm-distributed-tracing/) )
 
 ![](images/service-graph.png)
 
